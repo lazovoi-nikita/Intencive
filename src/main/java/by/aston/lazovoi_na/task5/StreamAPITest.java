@@ -89,11 +89,13 @@ public class StreamAPITest {
     }
 
     @Test
-    @Description("Для любого набора случайно-сгенерированных чисел нужно определить количество парных")
+    @Description("Для любого набора случайно-сгенерированных чисел нужно определить количество парных." +
+            "Для решения задачи использовать средства программного интерфейса Stream API.")
     public void test11() {
         List<Integer> list = IntStream.generate(() -> new Random().nextInt(1,10))
                 .limit(10).boxed().toList();
-        long count = list.stream().filter(i -> i % 2 == 0).count();
+        long count = list.stream().collect(Collectors.groupingBy(i -> i, Collectors.counting()))
+                .values().stream().filter(i -> i >= 2).count();
         System.out.println("Test 11 (list): " + list);
         System.out.println("Test 11 (count): " + count);
     }
