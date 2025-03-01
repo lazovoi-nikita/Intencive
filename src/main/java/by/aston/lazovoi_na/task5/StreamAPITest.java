@@ -23,14 +23,14 @@ public class StreamAPITest {
     @Test
     @Description("Умножить каждое число в массиве [1, 2, 3, 4, 5] на 2")
     public void test2() {
-        List<Integer> list = Stream.of(1, 2, 3, 4, 5).map(i -> i * 2).toList();
-        Assertions.assertEquals(List.of(2, 4, 6, 8, 10), list);
+        int[] array = Arrays.stream(new int[] {1, 2, 3, 4, 5}).map(i -> i * 2).toArray();
+        Assertions.assertArrayEquals(new int[]{2, 4, 6, 8, 10}, array);
     }
 
     @Test
     @Description("Посчитать сумму чисел в массиве [1, 2, 3, 4, 5], используя reduce()")
     public void test3() {
-        int sum = Stream.of(1, 2, 3, 4, 5).reduce(0, Integer::sum);
+        int sum = Arrays.stream(new int[] {1, 2, 3, 4, 5}).reduce(0, Integer::sum);
         Assertions.assertEquals(15, sum);
     }
 
@@ -48,15 +48,16 @@ public class StreamAPITest {
     @Test
     @Description("Найти первый четный элемент в списке [1, 2, 3, 4, 5]")
     public void test5() {
-        int number = Stream.of(1, 2, 3, 4, 5).filter(i -> i % 2 == 0).findFirst().orElse(-1);
+        List<Integer> list = List.of(1, 2, 3, 4, 5);
+        int number = list.stream().filter(i -> i % 2 == 0).findFirst().orElse(-1);
         Assertions.assertEquals(2, number);
     }
 
     @Test
     @Description("Отсортировать элементы массива [1, 3, 5, 7, 9] по возрастанию")
     public void test6() {
-        List<Integer> list = Stream.of(3, 1, 7, 9, 5).sorted().toList();
-        Assertions.assertEquals(List.of(1, 3, 5, 7, 9), list);
+        int[] array = Arrays.stream(new int[] {3, 1, 7, 9, 5}).sorted().toArray();
+        Assertions.assertArrayEquals(new int[] {1, 3, 5, 7, 9}, array);
     }
 
     @Test
@@ -83,8 +84,8 @@ public class StreamAPITest {
     @Test
     @Description("Выведите все нечетные числа в заданном массиве")
     public void test10() {
-        List<Integer> array = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        List<Integer> list = array.stream().filter(i -> i % 2 != 0).toList();
+        int[] array = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        List<Integer> list = Arrays.stream(array).filter(i -> i % 2 != 0).boxed().toList();
         Assertions.assertEquals(List.of(1, 3, 5, 7, 9), list);
     }
 
@@ -95,7 +96,7 @@ public class StreamAPITest {
         List<Integer> list = IntStream.generate(() -> new Random().nextInt(1,10))
                 .limit(10).boxed().toList();
         long count = list.stream().collect(Collectors.groupingBy(i -> i, Collectors.counting()))
-                .values().stream().filter(i -> i >= 2).count();
+                .values().stream().mapToLong(i -> i / 2).sum();
         System.out.println("Test 11 (list): " + list);
         System.out.println("Test 11 (count): " + count);
     }
@@ -104,8 +105,8 @@ public class StreamAPITest {
     @Description("Задан массив строк. Используя средства StreamAPI отсортировать строки в лексикографическом порядке")
     public void test12() {
         String[] array = new String[]{"go", "javascript", "c++", "java", "c"};
-        List<String> list = Arrays.stream(array).sorted().toList();
-        Assertions.assertEquals(List.of( "c", "c++", "go", "java", "javascript" ), list);
+        String[] result = Arrays.stream(array).sorted().toArray(String[]::new);
+        Assertions.assertArrayEquals(new String[] {"c", "c++", "go", "java", "javascript"}, result);
     }
 
     @Test
