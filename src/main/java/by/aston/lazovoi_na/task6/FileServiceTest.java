@@ -3,10 +3,6 @@ package by.aston.lazovoi_na.task6;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -33,12 +29,7 @@ public class FileServiceTest {
         Assertions.assertEquals(Arrays.stream(newText.split(" ")).toList(), FileService.readFile(FileService.FILE_PATH));
 
         //Восстановление исходного состояния файла до добавления новой строки
-        try {
-            Files.writeString(Paths.get(FileService.FILE_PATH), text,
-                    StandardOpenOption.TRUNCATE_EXISTING);
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+        FileService.rewriteFile(FileService.FILE_PATH, text);
     }
 
     @Test
@@ -54,11 +45,7 @@ public class FileServiceTest {
         Assertions.assertEquals(Arrays.stream(resultText.split(" ")).toList(), FileService.readFile(FileService.MERGED_FILE_PATH));
 
         //Очистка файла
-        try {
-            Files.writeString(Paths.get(FileService.MERGED_FILE_PATH), "", StandardOpenOption.TRUNCATE_EXISTING);
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+        FileService.rewriteFile(FileService.MERGED_FILE_PATH, "");
     }
 
     @Test
@@ -75,11 +62,6 @@ public class FileServiceTest {
                 FileService.readFile(FileService.REPLACE_TEXT_BY_SYMBOL_FILE_PATH));
 
         //Восстановление исходного состояния файла до изменений
-        try {
-            Files.writeString(Paths.get(FileService.REPLACE_TEXT_BY_SYMBOL_FILE_PATH), textBeforeReplacing,
-                    StandardOpenOption.TRUNCATE_EXISTING);
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+        FileService.rewriteFile(FileService.REPLACE_TEXT_BY_SYMBOL_FILE_PATH, textBeforeReplacing);
     }
 }
