@@ -1,0 +1,1 @@
+This text is for checking the replacement of spaces and special characters (such as , . @, etc.) to the $ symbol.
